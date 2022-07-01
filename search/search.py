@@ -136,7 +136,7 @@ def breadthFirstSearch(problem: SearchProblem):
     inicio = (problem.getStartState(), [])
     
     fronteira.push(inicio)
-    #comentario
+    
     while not fronteira.isEmpty():
         #begin exploring last (most-recently-pushed) node on frontier
         estado, caminho = fronteira.pop()
