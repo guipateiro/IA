@@ -159,7 +159,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
         def minimax(agente, profundidade, gameState):
             listaEstados = []
-            if gameState.isLose() or gameState.isWin() or profundidade == self.depth:  # return the utility in case the defined depth is reached or the game is won/lost.
+            if gameState.isLose() or gameState.isWin() or profundidade == self.depth:
                 return "stop" , self.evaluationFunction(gameState)
 
             if agente == 0:  
@@ -202,7 +202,7 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         
         def alphabeta(agente, profundidade, gameState, a, b):
             
-            if gameState.isLose() or gameState.isWin() or profundidade == self.depth:  # return the utility in case the defined depth is reached or the game is won/lost.
+            if gameState.isLose() or gameState.isWin() or profundidade == self.depth:
                 return "stop" , self.evaluationFunction(gameState)
 
             if agente == 0:  
@@ -262,7 +262,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
 
         def expectimax(agente, profundidade, gameState):
             listaEstados = []
-            if gameState.isLose() or gameState.isWin() or profundidade == self.depth:  # return the utility in case the defined depth is reached or the game is won/lost.
+            if gameState.isLose() or gameState.isWin() or profundidade == self.depth:
                 return "stop" , self.evaluationFunction(gameState)
 
             if agente == 0:  
@@ -305,7 +305,6 @@ def betterEvaluationFunction(currentGameState: GameState):
     aux = currentGameState.getFood()
     comida = aux.asList()
 
-    "*** YOUR CODE HERE ***"
 
     distMinimaComida = 99999999
     for c in comida:
