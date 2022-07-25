@@ -91,8 +91,6 @@ class ReflexAgent(Agent):
             if distancia < distMinimaFantasma:
                 distMinimaFantasma = distancia
         
-        #print("distancia minima :{:<30} || distancia fantasma {:<30}" .format( 1/(float(distMinimaComida)+1),1/(float(distMinimaFantasma)+1)))    
-        #return successorGameState.getScore() + distMinimaFantasma / (distMinimaComida * 10) + score
         return successorGameState.getScore() + 1/(float(distMinimaComida)+1)  - 1/(float(distMinimaFantasma)+1) 
 
 def scoreEvaluationFunction(currentGameState: GameState):
@@ -300,8 +298,33 @@ def betterEvaluationFunction(currentGameState: GameState):
     evaluation function (question 5).
 
     DESCRIPTION: <write something here so we know what you did>
+
     """
     "*** YOUR CODE HERE ***"
+    posicaoPac = currentGameState.getPacmanPosition()
+    aux = currentGameState.getFood()
+    comida = aux.asList()
+
+    "*** YOUR CODE HERE ***"
+
+    distMinimaComida = 99999999
+    for c in comida:
+        distancia = util.manhattanDistance(posicaoPac, c)
+        if distancia < distMinimaComida:
+            distMinimaComida = distancia
+
+    distMinimaFantasma = 99999999
+    for c in currentGameState.getGhostStates():
+        distancia = util.manhattanDistance(posicaoPac, c.getPosition())
+        if distancia <= 1:
+           return -99999999     
+        if distancia < distMinimaFantasma:
+            distMinimaFantasma = distancia   
+
+    bolao = currentGameState.getCapsules()
+    boloes = len(bolao)
+    
+    return 100 * currentGameState.getScore() + 1/(float(distMinimaComida)+1)  - 1/(float(distMinimaFantasma)+1) - boloes
     util.raiseNotDefined()
 
 # Abbreviation
