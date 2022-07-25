@@ -74,20 +74,11 @@ def tinyMazeSearch(problem):
 
 def depthFirstSearch(problem: SearchProblem):
     """
-    Search the deepest nodes in the search tree first.
-
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
-
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-
+    comando uteis
     print("Start:", problem.getStartState())
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    "*** YOUR CODE HERE ***"
-    """Search the deepest nodes in the search tree first."""
 
     #a stack garante que o proximo nodo a ser visto sera um dos filhos do ultimo nodo analizado
     fronteira = util.Stack()
@@ -95,62 +86,60 @@ def depthFirstSearch(problem: SearchProblem):
     jaExplorados = []
 
     #o nodo eh a formado por um estado do tabuleiro e a lista de acoes
-    # que vao do estado inicial ate o final (que sera chamada de daminho)
     inicio = (problem.getStartState(), [])
+
+    #coloca o nodo inicio 
+    fronteira.push(inicio)
     
-    fronteira.push((problem.getStartState(),[]))
-    
+
     while not fronteira.isEmpty():
-        #begin exploring last (most-recently-pushed) node on frontier
+        #remove o ultimo elemento colocado
         estado, caminho = fronteira.pop()
 
+        # se o estado for o final pare
         if problem.isGoalState(estado):
                 return caminho
         
+        #evita repeticao de nodos 
         if estado not in jaExplorados:
-            #mark current node as explored
+            #colocar o nodo atual no jaExplorados
             jaExplorados.append(estado)
-            #get list of possible successor nodes in 
-            #form (successor, action, stepCost)
+            #pega a lista de estados sucessores 
             sucessores = problem.getSuccessors(estado)
-            #push each successor to frontier ''''
+            #coloca os sucessores na fronteira
             for novoEstado, proxAcao , lixo in sucessores:
                 novoAcao = caminho + [proxAcao]
                 novoNodo = (novoEstado, novoAcao)
                 fronteira.push(novoNodo)
 
     return caminho  
-
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem: SearchProblem):
-    """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    #a stack garante que o proximo nodo a ser visto sera um dos filhos do ultimo nodo analizado
+    #a queue garante que o proximo nodo a ser visto sera o que foi colocado a mais tempo
     fronteira = util.Queue()
     #nodos ja explorados
     jaExplorados = []
 
     #o nodo eh a formado por um estado do tabuleiro e a lista de acoes
-    # que vao do estado inicial ate o final (que sera chamada de daminho)
     inicio = (problem.getStartState(), [])
-    
+
+    #coloca o nodo inicio 
     fronteira.push(inicio)
     
     while not fronteira.isEmpty():
-        #begin exploring last (most-recently-pushed) node on frontier
+        #remove o ultimo elemento colocado
         estado, caminho = fronteira.pop()
-
+        # se o estado for o final pare
         if problem.isGoalState(estado):
                 return caminho
-        
+
+        #evita repeticao de nodos 
         if estado not in jaExplorados:
-            #mark current node as explored
+            #colocar o nodo atual no jaExplorados
             jaExplorados.append(estado)
-            #get list of possible successor nodes in 
-            #form (successor, action, stepCost)
+            #pega a lista de estados sucessores 
             sucessores = problem.getSuccessors(estado)
-            #push each successor to frontier ''''
             for novoEstado, proxAcao , lixo in sucessores:
                 novoAcao = caminho + [proxAcao]
                 novoNodo = (novoEstado, novoAcao)
@@ -160,40 +149,40 @@ def breadthFirstSearch(problem: SearchProblem):
     util.raiseNotDefined()
 
 def uniformCostSearch(problem: SearchProblem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    fronteira = util.PriorityQueue()
-    #nodos ja explorados
-    jaExplorados = []
+	#a queue garante que o proximo nodo a ser visto sera o com menor custo
+	fronteira = util.PriorityQueue()
+	#nodos ja explorados
+	jaExplorados = []
 
-    #o nodo eh a formado por um estado do tabuleiro e a lista de acoes
-    # que vao do estado inicial ate o final (que sera chamada de daminho)
-    inicio = (problem.getStartState(), [], 0)
-    
-    fronteira.push(inicio,0)
-    
-    while not fronteira.isEmpty():
-        #begin exploring last (most-recently-pushed) node on frontier
-        estado, caminho,custoPai = fronteira.pop()
-        
-        if problem.isGoalState(estado):
-            return caminho
+	#o nodo eh a formado por um estado do tabuleiro e a lista de acoes
+	inicio = (problem.getStartState(), [], 0)
 
-        if estado not in jaExplorados:
-            #mark current node as explored
-            jaExplorados.append(estado)
-            #get list of possible successor nodes in 
-            #form (successor, action, stepCost)
-            sucessores = problem.getSuccessors(estado)
-            #push each successor to frontier ''''
-            for novoEstado, proxAcao , custo in sucessores:
-                novoCusto = custo + custoPai
-                novoAcao = caminho + [proxAcao]
-                novoNodo = (novoEstado, novoAcao, novoCusto)
-                fronteira.push(novoNodo,novoCusto)
+	#coloca o nodo inicio 
+	#agora contem o custo dos antecessores
+	fronteira.push(inicio,0)
 
-    return caminho 
-    util.raiseNotDefined()
+	while not fronteira.isEmpty():
+		#remove o ultimo elemento colocado
+		estado, caminho,custoPai = fronteira.pop()
+		# se o estado for o final pare
+		if problem.isGoalState(estado):
+			return caminho
+
+		#evita repeticao de nodos 
+		if estado not in jaExplorados:
+			#colocar o nodo atual no jaExplorados
+			jaExplorados.append(estado)
+			#pega a lista de estados sucessores 
+			sucessores = problem.getSuccessors(estado)
+			#coloca os sucessores na fronteira
+			for novoEstado, proxAcao , custo in sucessores:
+				novoCusto = custo + custoPai
+				novoAcao = caminho + [proxAcao]
+				novoNodo = (novoEstado, novoAcao, novoCusto)
+				fronteira.push(novoNodo,novoCusto)
+
+	return caminho 
+	util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
     """
@@ -203,126 +192,42 @@ def nullHeuristic(state, problem=None):
     return 0
 
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
-	"""Search the node that has the lowest combined cost and heuristic first."""
-
-	"*** YOUR CODE HERE ***"
-
+	#a queue garante que o proximo nodo a ser visto sera o com menor custo
 	fronteira = util.PriorityQueue()
+
 	#nodos ja explorados
 	jaExplorados = [] 
 
 	#o nodo eh a formado por um estado do tabuleiro e a lista de acoes
-	# que vao do estado inicial ate o final (que sera chamada de daminho)
 	inicio = (problem.getStartState(), [], 0)
 
+	#coloca o nodo inicio 
+    #agora contem o custo dos antecessores
 	fronteira.push(inicio,heuristic(problem.getStartState(),problem))
-
+    
 	while not fronteira.isEmpty():
-		#begin exploring last (most-recently-pushed) node on frontier
-
-		estado, caminho,h = fronteira.pop()
-
+		#remove o ultimo elemento colocado
+		estado, caminho, custoPai = fronteira.pop()
+		# se o estado for o final pare
 		if problem.isGoalState(estado):
-			#print(caminho)
 			return caminho
 
-		flag = 1
-		for aux in jaExplorados:
-			(e,a,c) = aux
-			if (e == estado):
-				flag = 0
-		if (flag == 1): 		
-			#if estado not in jaExplorados:	
-			#mark current node as explored
-			jaExplorados.append((estado,caminho,h))
-			#get list of possible successor nodes in 
-			#form (successor, action, stepCost)
+		#evita repeticao de nodos 
+		if estado not in jaExplorados:
+			#colocar o nodo atual no jaExplorados
+			jaExplorados.append(estado)
+			#pega a lista de estados sucessores 
 			sucessores = problem.getSuccessors(estado)
-			#push each successor to frontier 
+			#coloca os sucessores na fronteira
 			for novoEstado, proxAcao , custo in sucessores:
+				novoCusto = custo + custoPai
 				novoAcao = caminho + [proxAcao]
-				novoCusto = problem.getCostOfActions(novoAcao)
-				#novoCusto = custoPai + custo 
-				#if (novoEstado,_,_) is in fronteira:
-				flag = 0
-				for aux in jaExplorados:
-					(e,a,c) = aux
-					if (e == novoEstado):
-						flag = 1
-						if (novoCusto < problem.getCostOfActions(a)):
-							novoNodo = (novoEstado, novoAcao, novoCusto)
-							fronteira.update(novoNodo,novoCusto + heuristic(novoEstado,problem))
-						break
-				if flag == 0:
-					novoNodo = (novoEstado, novoAcao, novoCusto )
-					fronteira.push(novoNodo,novoCusto + heuristic(novoEstado,problem))	
-					#jaExplorados.append((novoEstado, novoAcao, novoCusto))
-
-	#print(caminho)				
+				novoNodo = (novoEstado, novoAcao, novoCusto)
+				fronteira.push(novoNodo,novoCusto + heuristic(novoEstado,problem))
+			
 	return caminho
 	util.raiseNotDefined()
-
-	'''
-
-	fronteira = util.PriorityQueue()
-	#nodos ja explorados
-	jaExplorados = [] 
-
-	#o nodo eh a formado por um estado do tabuleiro e a lista de acoes
-	# que vao do estado inicial ate o final (que sera chamada de daminho)
-	inicio = (problem.getStartState(), [], 0)
-
-	fronteira.push(inicio,0)
-
-	while not fronteira.isEmpty():
-		#begin exploring last (most-recently-pushed) node on frontier
-
-		estado, caminho,custoPai = fronteira.pop()
-
-		if problem.isGoalState(estado):
-			return caminho
-
-		if estado not in jaExplorados:	
-			#mark current node as explored
-			jaExplorados.append((estado,caminho,custoPai))
-			#get list of possible successor nodes in 
-			#form (successor, action, stepCost)
-			sucessores = problem.getSuccessors(estado)
-			#push each successor to frontier 
-			for novoEstado, proxAcao , custo in sucessores:
-				novoAcao = caminho + [proxAcao]
-				novoCusto = problem.getCostOfActions(novoAcao)
-				#novoCusto = custoPai + custo 
-				#if (novoEstado,_,_) is in fronteira:
-				flag = 0
-				for (e,a,c) in jaExplorados:
-					if e == novoEstado and novoCusto >= c : 
-						#novoNodo = (novoEstado, novoAcao, novoCusto + heuristic(novoEstado,problem))
-						#fronteira.update(novoNodo,novoCusto)
-						flag = 1
-						break
-				if flag == 0:
-					novoNodo = (novoEstado, novoAcao, novoCusto )
-					fronteira.push(novoNodo,novoCusto + heuristic(novoEstado,problem))	
-					#jaExplorados.append((novoEstado, novoAcao, novoCusto))
-
 	
-	util.raiseNotDefined()
-	'''
-	'''
-	for each neighbor of current
-	tentative_gScore := gScore[current] + d(current, neighbor)
-	if tentative_gScore < gScore[neighbor]
-	    cameFrom[neighbor] := current
-	    gScore[neighbor] := tentative_gScore
-	    fScore[neighbor] := tentative_gScore + h(neighbor)
-	    if neighbor not in openSet
-	        openSet.add(neighbor)
-	'''	
-
-	#return caminho
-	
-
 
 # Abbreviations
 bfs = breadthFirstSearch
